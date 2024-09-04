@@ -1,0 +1,1 @@
+export const DB_NAME = "CONTRACT_FARMING_SYSTEM";
