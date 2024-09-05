@@ -2,13 +2,25 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
     },
-    farmName: {
+    email: {
         type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    phoneNumber: {
+        type: String
+    },
+    gender: {
+        type: String,
+        enum: ['Male', 'Female'],
+        required: true
     },
     state: {
         type: String,
@@ -22,20 +34,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    gender: {
-        type: String,
-        enum: ['Male', 'Female'],
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    phoneNumber: {
-        type: String
-    },
     role: {
         type: String,
         enum: ['Farmer', 'Buyer', 'Admin'],
@@ -46,8 +44,17 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8,
     },
+    accountStatus: {
+        type: String,
+        enum: ['Pending Registration', 'Under Review', 'Active', 'Rejected'],
+        default: 'Pending Registration'
+    },
     refreshToken: {
         type: String
+    },
+    farmerProfile: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'FarmerProfile'
     }
 }, { timestamps: true });
 
