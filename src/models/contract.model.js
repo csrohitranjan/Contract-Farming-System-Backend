@@ -1,5 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
+
+// Actually this Schema will work when the Buyer buy any products
+
 const contractSchema = new mongoose.Schema({
     cropId: {
         type: Schema.Types.ObjectId,
@@ -15,6 +18,22 @@ const contractSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    // Actually this Schema will work when the Buyer buy any products
+    completeAddress: {
+        type: String,
+        required: true
+    },
+    adressProof: {
+        type: String,
+        required: true
+    },
+    paymentMode: {
+        type: String,
+        required: true
+    },
+    deliveryType: {
+        type: String
     },
     contractTerms: {
         type: String

@@ -11,6 +11,10 @@ const cropSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    cropType: {
+        type: String,
+        required: true
+    },
     quantity: {
         type: Number,
         required: true
@@ -18,6 +22,18 @@ const cropSchema = new mongoose.Schema({
     pricePerUnit: {
         type: Number,
         required: true
+    },
+    showingDate: {
+        type: Date,
+    },
+    harvestDate: {
+        type: Date,
+    },
+    deliveryType: {
+        type: String
+    },
+    contractDuration: {
+        type: String
     },
     description: {
         type: String,
