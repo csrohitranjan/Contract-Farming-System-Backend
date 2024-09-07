@@ -4,7 +4,7 @@ import mongoose, { Schema } from "mongoose";
 
 const cropSchema = new mongoose.Schema({
     farmerId: {
-        type: Schema.Types.objectId,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
     cropName: {
@@ -23,7 +23,7 @@ const cropSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    showingDate: {
+    sowingDate: {
         type: Date,
     },
     harvestDate: {

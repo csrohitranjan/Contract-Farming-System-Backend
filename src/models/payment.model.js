@@ -12,10 +12,12 @@ const PaymentSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         enum: ['Bank_Transfer', 'Credit_Card', 'Paypal', 'Cash'],
+        required: true,
     },
     paymentStatus: {
         type: String,
-        enum: ['Pending', 'Completed', 'Failed']
+        enum: ['Pending', 'Completed', 'Failed'],
+        required: true
     },
     payentDate: {
         type: Date

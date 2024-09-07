@@ -25,7 +25,7 @@ const negotionSchema = new Schema({
     status: {
         type: String,
         enum: ['Open', 'Closed'],
-        default: open
+        default: 'Open'
     }
 
 }, { timestamps: true });

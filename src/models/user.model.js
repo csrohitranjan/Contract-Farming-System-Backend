@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
     },
     farmerProfile: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'FarmerProfile'
+        ref: 'FarmerProfile' // Only for Farmers
     }
 }, { timestamps: true });
 

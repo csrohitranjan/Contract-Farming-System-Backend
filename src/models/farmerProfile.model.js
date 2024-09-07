@@ -14,14 +14,14 @@ const farmerProfileSchema = new Schema({
         type: String,
         required: true
     },
-    cropPreferances: {
+    cropPreferences: {
         type: String
     },
     farmCompleteAddress: {
         type: String,
         required: true
     },
-    adressProof: {
+    addressProof: {
         type: String,
         required: true
     },

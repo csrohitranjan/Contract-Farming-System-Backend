@@ -24,7 +24,7 @@ const contractSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    adressProof: {
+    addressProof: {
         type: String,
         required: true
     },
