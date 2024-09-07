@@ -1,14 +1,16 @@
 import { User } from "../models/user.model.js";
 import { FarmerProfile } from "../models/farmerProfile.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import fs from "fs";
 
 
-export const registerFarm = async (req, res) => {
-    let addressProofPath;
+
+
+
+const registerFarm = async (req, res) => {
     try {
-
         const user = req.user;
-        console.log(user)
+
         if (user.role !== 'Farmer') {
             return res.status(403).json({
                 status: 403,
@@ -17,18 +19,19 @@ export const registerFarm = async (req, res) => {
             });
         }
 
+        const { farmName, farmSize, cropPreferences, farmCompleteAddress, farmingMethod, yearOfExperience, farmLocation } = req.body;
+        const addressProof = req.file;  // File is passed via multipart/form-data
+
         const existingProfile = await FarmerProfile.findOne({ userId: user._id });
+
         if (existingProfile) {
+            fs.unlinkSync(addressProof.path);
             return res.status(400).json({
                 status: 400,
                 success: false,
                 message: "You have already registered a farm."
             });
         }
-
-        // Create new farm registration 
-        const { farmName, farmSize, cropPreferences, farmCompleteAddress, farmingMethod, yearOfExperience, farmLocation } = req.body;
-        const addressProof = req.file;  // File is passed via multipart/Form data
 
         if (!farmName || !farmSize || !farmCompleteAddress || !addressProof) {
             return res.status(400).json({
@@ -38,8 +41,15 @@ export const registerFarm = async (req, res) => {
             });
         }
 
-        addressProofPath = addressProof.path;
-        const uploadResult = await uploadOnCloudinary(addressProofPath, farmName);
+        const uploadResult = await uploadOnCloudinary(addressProof.path, farmName);
+
+        if (!uploadResult) {
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "File upload failed. Please try again."
+            });
+        }
 
         const newFarmerProfile = new FarmerProfile({
             userId: user._id,
@@ -55,7 +65,6 @@ export const registerFarm = async (req, res) => {
 
         const savedProfile = await newFarmerProfile.save();
 
-        // Update the user model to link the farmerProfile
         await User.findByIdAndUpdate(user._id, {
             farmerProfile: savedProfile._id,
             accountStatus: 'Under Review'
@@ -69,12 +78,16 @@ export const registerFarm = async (req, res) => {
         });
 
     } catch (error) {
-        // console.error("Error registering farm:", error);
         res.status(500).json({
             status: 500,
             success: false,
-            message: "Internal Server Error on: registerFarm Controller",
+            message: "Internal Server Error in registerFarm controller",
             error: error.message
         });
     }
 };
+
+
+
+
+export { registerFarm }

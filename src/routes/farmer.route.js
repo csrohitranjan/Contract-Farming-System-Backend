@@ -8,8 +8,7 @@ import { registerFarm } from "../controllers/farmer.controller.js";
 
 // ########### FARMER ROUTES ##############
 
-// Route with multer middleware to handle the file upload
-router.route("/registerFarm").post(upload.single('addressProof'), userAuth, isFarmerAuth, registerFarm);
+router.route("/registerFarm").post(userAuth, isFarmerAuth, upload.single('addressProof'), registerFarm);
 // router.post('/registerFarm', upload.single('addressProof'), registerFarm);
 
 export default router;
