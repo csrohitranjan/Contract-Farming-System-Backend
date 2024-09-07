@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import { FarmerProfile } from "../models/farmerProfile.model.js";
+import { Crop } from "../models/crop.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
 
@@ -89,5 +90,66 @@ const registerFarm = async (req, res) => {
 
 
 
+const addCrop = async (req, res) => {
+    try {
+        const user = req.user;
 
-export { registerFarm }
+        // Check if the farmer's account is active
+        if (user.accountStatus !== 'Active') {
+            return res.status(403).json({
+                status: 403,
+                success: false,
+                message: "Your account is not active. You cannot add crops."
+            });
+        }
+
+
+        const { cropName, cropType, quantity, pricePerUnit, sowingDate, harvestDate, deliveryType, contractDuration, description } = req.body;
+
+        if (!cropName || !cropType || !quantity || !pricePerUnit || !description) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "Missing required fields for crop listing."
+            });
+        }
+
+        const newCrop = new Crop({
+            farmerId: user._id,
+            cropName,
+            cropType,
+            quantity,
+            pricePerUnit,
+            sowingDate,
+            harvestDate,
+            deliveryType,
+            contractDuration,
+            description,
+            status: 'Available' // Set status as available by default
+        });
+
+
+        const savedCrop = await newCrop.save();
+
+        res.status(201).json({
+            status: 201,
+            success: true,
+            message: "Crop added successfully!",
+            crop: savedCrop
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            success: false,
+            message: "Internal server error on addCrop controller.",
+            error: error.message
+        });
+    }
+};
+
+
+
+
+
+export { registerFarm, addCrop }
