@@ -150,6 +150,40 @@ const addCrop = async (req, res) => {
 
 
 
+const getFarmerCrops = async (req, res) => {
+    try {
+        const user = req.user;
+
+        // Check if the farmer's account is active
+        if (user.accountStatus !== 'Active') {
+            return res.status(403).json({
+                status: 403,
+                success: false,
+                message: "Your account is not active."
+            });
+        }
 
 
-export { registerFarm, addCrop }
+        const crops = await Crop.find({ farmerId: user._id });
+
+        res.status(200).json({
+            status: 200,
+            success: true,
+            message: "Crops retrieved successfully.",
+            crops
+        });
+
+    } catch (error) {
+        console.error("Error fetching farmer crops:", error);
+        res.status(500).json({
+            status: 500,
+            success: false,
+            message: "Internal Server Error on: getFarmerCrops Controller",
+            error: error.message
+        });
+    }
+};
+
+
+
+export { registerFarm, addCrop, getFarmerCrops }
