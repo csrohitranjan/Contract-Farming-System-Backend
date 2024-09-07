@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // ############  ROUTES  ########################
 import userRouter from "./routes/user.route.js";
-
+import farmerRoute from "./routes/farmer.route.js";
 
 
 // ####### ROUTES DECLARATION ##############
@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
 
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/users/farmer", farmerRoute);
 
 
 export default app;
